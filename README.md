@@ -17,12 +17,17 @@
   - **翻轉、旋轉、馬賽克增強、色彩調整、透視變換**。
   - 資料集劃分：**80% 訓練集，20% 驗證集**。
 
-### **2️⃣ SAM 訓練**
+### **2️⃣ YOLO-bounding-box 訓練**
+- 將 **Ground Truth Mask** 轉換為 **Bounding Box json格式的標註**。    
+- 再轉換為 **YOLO 訓練格式** (.txt)。  
+- 訓練 **YOLOv11**，並優化超參數以提升偵測準確度。  
+
+### **3️⃣ SAM 訓練**
 - 產生 **Ground Truth Mask** 作為標準答案。
 - 使用 **Bounding Box 作為 Prompt** 來微調 SAM。
 - 在 **醫療零件瑕疵數據集** 上進行 **Fine-tuning**。
 
-### **3️⃣ YOLO 與 SAM 比較**
+### **4️⃣ YOLO 與 SAM 比較**
 | 模型 | mAP50 | mAP50-95 | Precision  | Recall |
 |------|------|---------|-----------|--------|
 | YOLOv11 | 0.97 | 0.52 | 90% (Mask Precision) | 0.9 |
@@ -33,7 +38,7 @@
 - **SAM 的 Precision 是基於像素級分割（Pixel-wise Precision）**，表示 **分割出的瑕疵區域與 Ground Truth 的重合度**。  
 
 
-### **4️⃣ YOLO 與 SAM 的優劣比較**
+### **5️⃣ YOLO 與 SAM 的優劣比較**
 | 特色 | YOLO | SAM |
 |------|------|------|
 | **推理速度** | **快 (~0.02 秒/張圖)** | **慢 (~0.68 秒/張圖)** |
