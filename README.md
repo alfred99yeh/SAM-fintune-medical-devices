@@ -62,7 +62,22 @@
 - **醫療設備檢測**：利用 AI 進行 **醫療零件品質控管**。
 
 ## 🛠️ 安裝與使用方式
-### **1️⃣ clone專案**
+### **1️⃣ Clone 專案**
 ```sh
 git clone https://github.com/alfred99yeh/SAM-fintune-medical-devices.git
 cd SAM-fintune-medical-devices
+```
+### **2️⃣ 安裝所需的 Python requirements**
+```sh
+pip install -r requirements.txt
+```
+### **3️⃣ 訓練 SAM**
+```sh
+python fine_tune_SAM_singlelabel_tqdm_plot.py
+```
+### **3️⃣ 測試 SAM**
+```sh
+python fine_tune_SAM_singlelabel_test.py
+```
+## 📜 授權條款
+本專案採用 **MIT 授權條款**，您可以自由使用、修改和分發本專案，詳細內容請參閱 [LICENSE](LICENSE) 檔案。
