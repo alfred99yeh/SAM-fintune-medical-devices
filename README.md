@@ -1,7 +1,7 @@
 # 基於微調 Segment Anything Model (SAM) 的醫療零件瑕疵檢測
 
 ## 📖 專案簡介
-本專案針對 **元利盛醫療零件瑕疵檢測**，解決 **表面亮度不均與低對比度** 的問題。我們主要探討 **Segment Anything Model (SAM)** 在瑕疵檢測中的表現，並與 **YOLO** 進行比較，分析兩者的優劣。
+本專案針對 **元利盛醫療零件瑕疵檢測**，解決 **表面亮度不均與低對比度** 的問題。我們主要探討 **Segment Anything Model (SAM) 結合 YOLO 預測的bounding box 作為 prompt** 在瑕疵檢測中的表現，並與 **YOLOv11-segmentation** 進行比較，分析兩者的優劣。
 
 ## 🎯 研究目標
 - **使用 SAM 進行醫療零件的瑕疵分割**。
@@ -60,6 +60,28 @@
 ## 🏭 產業應用
 - **智慧製造**：應用於 **醫療、汽車、電子產業** 的自動瑕疵檢測。
 - **醫療設備檢測**：利用 AI 進行 **醫療零件品質控管**。
+
+## 📸 示意圖
+### **1️⃣ SAM 訓練流程圖**
+![SAM 訓練流程圖](images/SAM訓練流程圖.png)
+![SAM 資料集可視化](images/SAM資料集可視化.png)
+
+### **2️⃣ YOLO-bounding-box 訓練過程**
+![YOLO bounding box](images/YOLO-bounding-box數據分析.png)
+
+### **3️⃣ SAM 應用流程圖**
+![SAM 瑕疵分割](images/SAM應用流程圖.png)
+
+### **4️⃣ SAM Prediction v.s. Actual**
+![1](images/SAM-finetuned-Prediction-v.s.-Actual-1.png)
+![2](images/SAM-finetuned-Prediction-v.s.-Actual-2.png)
+![3](images/SAM-finetuned-Prediction-v.s.-Actual-3.png)
+![4](images/SAM-finetuned-Prediction-v.s.-Actual-4.png)
+
+### **5️⃣混淆矩陣 & 評估指標 & Loss Curve**
+![Confusion Matrix](images/SAM-finetuned-Confusion-Matrix.png)
+![Evaluation Index可視化](images/SAM-finetuned-Evaluation-Index可視化.png)
+![Loss Curve](images/SAM-bounding-box-loss-curve.png)
 
 ## 🛠️ 安裝與使用方式
 ### **1️⃣ Clone 專案**
