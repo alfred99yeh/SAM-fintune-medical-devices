@@ -1,1 +1,1 @@
-# semiconductor_sam
+# SAM-fintune-medical-devices
