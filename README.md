@@ -107,4 +107,4 @@ python fine_tune_SAM_singlelabel_tqdm_plot.py
 python fine_tune_SAM_singlelabel_test.py
 ```
 ## 📜 授權條款
-本專案採用 **MIT 授權條款**，您可以自由使用、修改和分發本專案，詳細內容請參閱 [LICENSE](LICENSE) 檔案。
+本專案採用 **MIT 授權條款**，您可以自由使用、修改和分發本專案，詳細內容請參閱 [LICENSE](LICENSE) 檔案。hello
