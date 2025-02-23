@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 from transformers import SamModel
-from tqdm import tqdm  # 引入 tqdm 库
+from tqdm import tqdm
 
 # Custom Dataset class
 class SAMDataset(Dataset):
@@ -42,7 +42,7 @@ class SAMDataset(Dataset):
         labels = []
         for ann in bbox_data['annotations']:
             bboxes.append(ann['bbox'])
-            labels.append(1 if ann['category_id'] == 1 else 0)  # 假设 `NG` 类别的 ID 为 1 # category_id, class_id
+            labels.append(1 if ann['category_id'] == 1 else 0)  # 假設 `NG` 類別的 ID 為 1 # category_id, class_id
 
         if len(bboxes) == 0:
             bboxes = [[0, 0, 1, 1]]
@@ -141,42 +141,42 @@ def plot_normalized_confusion_matrix(cm, classes):
 
 # Metrics plot
 def plot_metrics(metrics):
-    # 将指标转换为 DataFrame，设置指标名为索引
+    # 將指標轉換為 DataFrame，設置指標名為索引
     metrics_df = pd.DataFrame.from_dict(metrics, orient="index", columns=["Value"])
     metrics_df.plot(kind="bar", figsize=(10, 6), legend=False)
     plt.title("Evaluation Metrics")
     plt.xlabel("Metrics")
     plt.ylabel("Values")
     plt.xticks(rotation=45)
-    plt.tight_layout()  # 调整布局以防止标题或标签被裁剪
+    plt.tight_layout()  # 防止tiltle或label被裁剪
     plt.axis(True)
     plt.show()
 
 def visualize_masks(image, pred_mask, true_mask, save_path=None):
     """
-    使用 Matplotlib 可视化原图、预测掩码和真实掩码。
+    使用 Matplotlib 可視化原圖、預測masks及ground truth masks。
     
     Args:
-        image (PIL.Image): 原始图像。
-        pred_mask (torch.Tensor): 预测掩码。
-        true_mask (torch.Tensor): 真实掩码。
-        save_path (str): 如果指定路径，将保存图片。
+        image (PIL.Image): 原始影像。
+        pred_mask (torch.Tensor): 預測遮罩。
+        true_mask (torch.Tensor): 真實遮罩。
+        save_path (str): 保存圖片到只並路徑。
     """
     plt.figure(figsize=(12, 4))
 
-    # 绘制原图
+    # 繪製原圖
     plt.subplot(1, 3, 1)
     plt.imshow(image)
     plt.title("Original Image")
     plt.axis("off")
 
-    # 绘制预测掩码
+    # 繪製預測遮罩
     plt.subplot(1, 3, 2)
     plt.imshow(pred_mask.cpu().numpy(), cmap="jet")
     plt.title("Predicted Mask")
     plt.axis("off")
 
-    # 绘制真实掩码
+    # 繪製真實遮罩
     plt.subplot(1, 3, 3)
     plt.imshow(true_mask.cpu().numpy(), cmap="jet")
     plt.title("True Mask")
@@ -184,7 +184,7 @@ def visualize_masks(image, pred_mask, true_mask, save_path=None):
 
     plt.tight_layout()
 
-    # 保存或显示
+    # 保存或顯示
     if save_path:
         plt.savefig(save_path, bbox_inches="tight")
     else:
@@ -212,7 +212,7 @@ if __name__ == "__main__":
     val_size = len(full_dataset) - train_size
     train_dataset, val_dataset = random_split(full_dataset, [train_size, val_size])
 
-    # 使用多线程加载数据
+    # 多線程
     train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True, num_workers=4, pin_memory=True)
     val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False, num_workers=4, pin_memory=True)
 
@@ -230,7 +230,7 @@ if __name__ == "__main__":
     all_metrics = {"IoU": [], "F1-score": [], "Accuracy": [], "Recall": [], "mAP@50": [], "mAP@50:95": []}
     total_cm = np.zeros((num_classes, num_classes), dtype=int)
 
-    # 用 tqdm 包裹 val_loader，显示进度条
+    # 用 tqdm 包裹 val_loader，顯示進度條
     for idx, batch in enumerate(tqdm(val_loader, desc="Evaluating")):
         pixel_values = batch['pixel_values'].squeeze(1).to(device)
         input_boxes = batch['input_boxes'].to(device)
@@ -239,8 +239,8 @@ if __name__ == "__main__":
         with torch.no_grad():
             outputs = model(pixel_values=pixel_values, input_boxes=input_boxes)
 
-        pred_masks = outputs.pred_masks.sigmoid()  # 获取预测掩码
-        pred_masks = pred_masks.max(dim=1)[0]  # 将 3 通道压缩为 1 通道
+        pred_masks = outputs.pred_masks.sigmoid()  # 獲取預測遮罩
+        pred_masks = pred_masks.max(dim=1)[0]  # 壓縮通道
         pred_masks = (pred_masks > 0.5).long()  # 二值化
 
         # 将 3 通道的 pred_masks 转换为 1 通道
@@ -251,26 +251,26 @@ if __name__ == "__main__":
         resized_true_masks = F.interpolate(
             input=true_masks,
             size=pred_masks.shape[-2:],
-            mode="nearest"  # 最近邻插值
-        ).squeeze(1)  # 移除多余的通道维度
+            mode="nearest"  # 最近鄰插值
+        ).squeeze(1)  # 移除多餘的通道
 
         resized_true_masks = (resized_true_masks > 0.5).long()
 
-        # 确保形状一致
+        # 確保shape一致
         assert resized_true_masks.shape == pred_masks.shape, (
             f"Shape mismatch after resizing: true_masks {resized_true_masks.shape}, pred_masks {pred_masks.shape}"
         )
 
-        # 从 val_dataset 获取原始索引
-        original_idx = val_dataset.indices[idx]  # 使用 random_split 时保留的索引
+        # 從 val_dataset 獲取原始索引
+        original_idx = val_dataset.indices[idx]  # 使用 random_split 時保留的索引
         original_image_path = full_dataset.image_paths[original_idx]
         original_image = Image.open(original_image_path).convert("RGB")
 
-        # 可视化并保存
+        # 可是化並保存
         visualize_masks(original_image, pred_masks[0], resized_true_masks[0],
                         save_path=f"output/mask_comparison_{idx}.png")
 
-        # 评估
+        # 評估
         batch_metrics, batch_cm = evaluate_segmentation_with_cm(pred_masks, resized_true_masks, num_classes)
 
         for metric, values in batch_metrics.items():
@@ -285,11 +285,11 @@ if __name__ == "__main__":
     for metric, value in final_metrics.items():
         print(f"{metric}: {value:.4f}")
 
-    # 绘制混淆矩阵
+    # 繪製混淆矩陣
     plot_confusion_matrix(total_cm, classes=["Background", "NG"])
     plot_normalized_confusion_matrix(total_cm, classes=["Background", "NG"])
 
-    # 绘制评估指标
+    # 繪製評估指標
     plot_metrics(final_metrics)
 
     print("Confusion Matrix:")

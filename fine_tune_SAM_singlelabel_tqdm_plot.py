@@ -27,11 +27,11 @@ class SAMDataset(Dataset):
         image_path = self.image_paths[idx]
         image = Image.open(image_path).convert("RGB")
 
-        # 加载对应的单通道 Mask
+        # 加仔對應的單通道 Mask
         mask_path = os.path.join(self.mask_folder, os.path.basename(image_path).replace('.bmp', '_mask.png'))
         mask = Image.open(mask_path).convert("L")  # 單通道灰階
 
-        # 加载 Bounding Box
+        # 加載 Bounding Box
         bbox_path = os.path.join(self.bbox_folder, os.path.basename(image_path).replace('.bmp', '.json'))
         with open(bbox_path, 'r') as f:
             bbox_data = json.load(f)
@@ -40,12 +40,12 @@ class SAMDataset(Dataset):
         labels = []
         for ann in bbox_data['annotations']:
             bboxes.append(ann['bbox'])
-            # 所有标注均为 NG 类别，背景为 0
+            # 所有標註皆為 NG 類別，背景為 0
             labels.append(1 if ann['category_id'] == 1 else 0)  # 'NG' ID 為 1 # category_id, class_id
 
-        # 检查是否存在有效的 bboxes
+        # 檢查是否存在有效的 bboxes
         if len(bboxes) == 0:
-            bboxes = [[0, 0, 1, 1]]  # 添加虚拟框
+            bboxes = [[0, 0, 1, 1]]  # 添加虛擬bbox
             labels = [0]
 
         inputs = self.processor(images=image, return_tensors="pt")
@@ -94,7 +94,7 @@ def train_and_evaluate():
         # 确保 true_masks 和 pred_masks的shape一致
         true_masks = F.interpolate(true_masks, size=pred_masks.shape[-2:], mode='bilinear', align_corners=False).to(pred_masks.device)
 
-        # 使用二元交叉熵损失计算
+        # 使用二元交叉熵
         loss = F.binary_cross_entropy_with_logits(pred_masks, true_masks)
         
         return loss
@@ -174,6 +174,6 @@ def train_and_evaluate():
 
     plot_metrics(train_losses, val_losses)
 
-# 在主程序中运行
+# main function
 if __name__ == "__main__":
     train_and_evaluate()
