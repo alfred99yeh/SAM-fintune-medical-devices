@@ -3,6 +3,20 @@
 ## 📖 專案簡介
 本專案針對 **元利盛醫療零件瑕疵檢測**，解決 **表面亮度不均與低對比度** 的問題。我們主要探討 **Meta** 的 **Segment Anything Model (SAM) 結合 YOLO 預測的bounding box 作為 prompt** 在瑕疵檢測中的表現，並與 **YOLOv11-segmentation** 進行比較，分析兩者的優劣。
 
+## 📁 專案目錄結構（Project Structure）
+
+```bash
+SAM-fintune-medical-devices/
+├── images/                         # 訓練與驗證的輸出圖片
+├── output/                         # SAM 推論的結果比較
+├── fine_tune_SAM_singlelabel_test.py    # SAM 測試主程式
+├── fine_tune_SAM_singlelabel_tqdm_plot.py # SAM 訓練主程式
+├── polygon_to_singlelabel_mask.py       # 將多邊形轉換為 Mask 的工具
+├── polygon_to_bbox_singlelabel.py       # 將多邊形轉換為 YOLO bbox 的工具
+├── requirements.txt               # 需求文件
+├── README.md
+└── LICENSE
+```
 ## 🎯 研究目標
 - **使用 SAM 進行醫療零件的瑕疵分割**。
 - **比較 SAM 與 YOLO 在瑕疵檢測的準確度與效率**。
