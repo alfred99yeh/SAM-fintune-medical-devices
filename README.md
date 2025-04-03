@@ -1,7 +1,7 @@
 # 基於微調 Segment Anything Model (SAM) 的醫療零件瑕疵檢測
 
 ## 📖 專案簡介
-本專案針對 **元利盛醫療零件瑕疵檢測**，解決 **表面亮度不均與低對比度** 的問題。我們主要探討 **Segment Anything Model (SAM) 結合 YOLO 預測的bounding box 作為 prompt** 在瑕疵檢測中的表現，並與 **YOLOv11-segmentation** 進行比較，分析兩者的優劣。
+本專案針對 **元利盛醫療零件瑕疵檢測**，解決 **表面亮度不均與低對比度** 的問題。我們主要探討 **Meta** 的 **Segment Anything Model (SAM) 結合 YOLO 預測的bounding box 作為 prompt** 在瑕疵檢測中的表現，並與 **YOLOv11-segmentation** 進行比較，分析兩者的優劣。
 
 ## 🎯 研究目標
 - **使用 SAM 進行醫療零件的瑕疵分割**。
